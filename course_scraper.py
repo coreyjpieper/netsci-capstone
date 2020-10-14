@@ -38,7 +38,7 @@ def get_cross_listed(content):
     for description in result:
         course_title = description.find_previous(class_="class-schedule-course-title").text
         course_number = description.find_previous(class_="class-schedule-course-number").text
-        cross_listed_courses = re.findall("\w{4}[ -]\d{3}-\d{2}", description, re.I)
+        cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description, re.I)
         if course_title not in courses:
             courses[course_title] = [course_number] + cross_listed_courses
 
