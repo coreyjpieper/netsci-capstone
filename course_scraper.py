@@ -36,11 +36,26 @@ def get_cross_listed(content):
     result = content.find_all(string=re.compile("cross-listed", re.I))
     courses = {}
     for description in result:
-        course_title = description.find_previous(class_="class-schedule-course-title").text
-        course_number = description.find_previous(class_="class-schedule-course-number").text
-        cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description, re.I)
+        course_title = description.find_previous(class_="class-schedule-course-title").text     # ex: Network Science
+        course_number = description.find_previous(class_="class-schedule-course-number").text   # ex: COMP 479-01
+        section_number = int(course_number.split("-")[-1])
+
         if course_title not in courses:
-            courses[course_title] = [course_number] + cross_listed_courses
+            cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)    # ex: MATH 479-01
+            course_numbers = [course_number] + cross_listed_courses                     # ex: [COMP 479-01, MATH 479-01]
+            prefixes = [re.search(r"\w+", i).group() for i in course_numbers]           # ex: [COMP, MATH]
+            courses[course_title] = {
+                "prefixes": prefixes,
+                "course-numbers": course_numbers,
+                "total-sections": 1,
+                "total-enrollment": 1
+            }
+
+        elif section_number > courses[course_title]["total-sections"]:  # found a new section
+            cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)
+            courses[course_title]["course-numbers"].extend([course_number] + cross_listed_courses)
+            courses[course_title]["total-sections"] += 1
+            courses[course_title]["total-enrollment"] += 1
 
     return courses
 
@@ -58,3 +73,4 @@ if __name__ == '__main__':
 
     # TODO: check for courses with different numbers
 
+    pp(cross_listed)
