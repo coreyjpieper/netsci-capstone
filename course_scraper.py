@@ -17,7 +17,7 @@ def exploratory_analysis(content):
     print(len(result), "\n\n")
 
     # find course titles that contain a 4 digit number (year)
-    result = set(content.find_all(class_="class-schedule-course-title", string=re.compile("\d{4}")))
+    result = set(content.find_all(class_="class-schedule-course-title", string=re.compile(r"\d{4}")))
     pp([course.text for course in result])
     print(len(result), "\n\n")
 
@@ -25,7 +25,7 @@ def exploratory_analysis(content):
     result = content.find_all(string=re.compile("cross-listed", re.I))
     for description in result:
         course_title = description.find_previous(class_="class-schedule-course-title").text
-        cross_listed = re.search("cross-listed with (\w{4}[ -]\d{3}-\d{2}( and )?)*", description, re.I)
+        cross_listed = re.search(r"cross-listed with (\w{4}[ -]\d{3}-\d{2}( and )?)*", description, re.I)
         assert cross_listed is not None
         print(course_title, "\n\t", cross_listed.group())
     print(len(result))
@@ -44,7 +44,7 @@ def get_cross_listed(content):
         enrollment = max_capacity - available_seats
 
         if course_title not in courses:
-            cross_listed_with = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)       # ex: MATH 479-01
+            cross_listed_with = re.findall(r"\w{3,4}[ -]\d{3}-\d{2}", description)      # ex: MATH 479-01
             course_numbers = [course_number] + cross_listed_with                        # ex: [COMP 479-01, MATH 479-01]
             prefixes = [re.search(r"\w+", i).group() for i in course_numbers]           # ex: [COMP, MATH]
             courses[course_title] = {
@@ -55,7 +55,7 @@ def get_cross_listed(content):
             }
 
         elif section_number > courses[course_title]["total-sections"]:  # found a new section
-            cross_listed_with = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)
+            cross_listed_with = re.findall(r"\w{3,4}[ -]\d{3}-\d{2}", description)
             courses[course_title]["course-numbers"].extend([course_number] + cross_listed_with)
             courses[course_title]["total-sections"] += 1
             courses[course_title]["total-enrollment"] += enrollment
