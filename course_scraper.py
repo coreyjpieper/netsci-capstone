@@ -44,8 +44,8 @@ def get_cross_listed(content):
         enrollment = max_capacity - available_seats
 
         if course_title not in courses:
-            cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)    # ex: MATH 479-01
-            course_numbers = [course_number] + cross_listed_courses                     # ex: [COMP 479-01, MATH 479-01]
+            cross_listed_with = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)       # ex: MATH 479-01
+            course_numbers = [course_number] + cross_listed_with                        # ex: [COMP 479-01, MATH 479-01]
             prefixes = [re.search(r"\w+", i).group() for i in course_numbers]           # ex: [COMP, MATH]
             courses[course_title] = {
                 "prefixes": prefixes,
@@ -55,8 +55,8 @@ def get_cross_listed(content):
             }
 
         elif section_number > courses[course_title]["total-sections"]:  # found a new section
-            cross_listed_courses = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)
-            courses[course_title]["course-numbers"].extend([course_number] + cross_listed_courses)
+            cross_listed_with = re.findall("\w{3,4}[ -]\d{3}-\d{2}", description)
+            courses[course_title]["course-numbers"].extend([course_number] + cross_listed_with)
             courses[course_title]["total-sections"] += 1
             courses[course_title]["total-enrollment"] += enrollment
 
@@ -68,12 +68,12 @@ if __name__ == '__main__':
     semester_requests = requests.get(semester_url).text
     bs4_content = BeautifulSoup(semester_requests, "lxml")
 
-    cross_listed = get_cross_listed(bs4_content)
+    cross_listed_courses = get_cross_listed(bs4_content)
     # find courses where there is only one cross-listed course; this needs to be fixed
-    one_crosslist = {k: cross_listed[k] for k in cross_listed if len(cross_listed[k]) == 1}
+    one_crosslist = {k: cross_listed_courses[k] for k in cross_listed_courses if len(cross_listed_courses[k]) == 1}
     for i in one_crosslist:
         print(i, one_crosslist[i])
 
     # TODO: check for courses with different numbers
 
-    pp(cross_listed)
+    pp(cross_listed_courses)
