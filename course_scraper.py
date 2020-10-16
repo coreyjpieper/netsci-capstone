@@ -6,6 +6,7 @@ import json
 import re
 import requests
 import time
+import itertools
 from pprint import pp
 from concurrent.futures import ThreadPoolExecutor
 
@@ -83,6 +84,17 @@ def create_nodes(content, file):
             f.write(f'{subject.get("id")}, "{subject.text.strip()}" \n')    # ex: ANTH, "Anthropology"
 
 
+def create_edges(courses, file):
+    with open(file, 'w') as f:
+        f.write("Source, Target\n")
+        for course, info in courses.items():
+            subject_pairs = itertools.combinations(info["prefixes"], 2)
+
+            for pair in subject_pairs:
+                f.write(', '.join(pair))
+                f.write('\n')
+
+
 if __name__ == '__main__':
     semester_url = "https://www.macalester.edu/registrar/schedules/2020fall/class-schedule/"
     semester_requests = requests.get(semester_url).text
@@ -100,5 +112,5 @@ if __name__ == '__main__':
     # pp(cross_listed_courses)
 
     create_nodes(bs4_content, "nodes.csv")
+    create_edges(cross_listed_courses, "edges.csv")
 
-    pp(cross_listed_courses)
