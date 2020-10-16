@@ -75,19 +75,30 @@ def create_dataset(courses, file):
             f.write("\n")
 
 
+def create_nodes(content, file):
+    result = content.find_all("h3", id=True)
+    with open(file, 'w') as f:
+        f.write("Id, Label\n")
+        for subject in result:
+            f.write(f'{subject.get("id")}, "{subject.text.strip()}" \n')    # ex: ANTH, "Anthropology"
+
+
 if __name__ == '__main__':
     semester_url = "https://www.macalester.edu/registrar/schedules/2020fall/class-schedule/"
     semester_requests = requests.get(semester_url).text
     bs4_content = BeautifulSoup(semester_requests, "lxml")
 
     cross_listed_courses = get_cross_listed(bs4_content)
-    create_dataset(cross_listed_courses, "cross-listed.csv")
+    # create_dataset(cross_listed_courses, "cross-listed.csv")
+    #
+    # # find courses where there is only one cross-listed course; this needs to be fixed
+    # one_crosslist = {k: cross_listed_courses[k] for k in cross_listed_courses if len(cross_listed_courses[k]) == 1}
+    # for i in one_crosslist:
+    #     print(i, one_crosslist[i])
+    #
+    #
+    # pp(cross_listed_courses)
 
-    # find courses where there is only one cross-listed course; this needs to be fixed
-    one_crosslist = {k: cross_listed_courses[k] for k in cross_listed_courses if len(cross_listed_courses[k]) == 1}
-    for i in one_crosslist:
-        print(i, one_crosslist[i])
-
-    # TODO: check for courses with different numbers
+    create_nodes(bs4_content, "nodes.csv")
 
     pp(cross_listed_courses)
