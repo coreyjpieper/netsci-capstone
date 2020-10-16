@@ -63,12 +63,26 @@ def get_cross_listed(content):
     return courses
 
 
+def create_dataset(courses, file):
+    """Create a csv dataset from a dict of course information"""
+    with open(file, 'w') as f:
+        for course, info in courses.items():
+            f.write(course + ", ")
+            # convert lists to comma-separated strings, removing brackets and surrounding them in quotes
+            values = [str(i).translate(str.maketrans("", "", "[]'")) for i in info.values()]
+            values = [f'"{i}"' if re.search(r"[A-Z]", i) else i for i in values]
+            f.write(", ".join(values))
+            f.write("\n")
+
+
 if __name__ == '__main__':
     semester_url = "https://www.macalester.edu/registrar/schedules/2020fall/class-schedule/"
     semester_requests = requests.get(semester_url).text
     bs4_content = BeautifulSoup(semester_requests, "lxml")
 
     cross_listed_courses = get_cross_listed(bs4_content)
+    create_dataset(cross_listed_courses, "cross-listed.csv")
+
     # find courses where there is only one cross-listed course; this needs to be fixed
     one_crosslist = {k: cross_listed_courses[k] for k in cross_listed_courses if len(cross_listed_courses[k]) == 1}
     for i in one_crosslist:
