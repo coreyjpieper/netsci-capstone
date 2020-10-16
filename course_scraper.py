@@ -67,7 +67,7 @@ def create_dataset(courses, file):
     """Create a csv dataset from a dict of course information"""
     with open(file, 'w') as f:
         for course, info in courses.items():
-            f.write(course + ", ")
+            f.write(f'"{course}", ')
             # convert lists to comma-separated strings, removing brackets and surrounding them in quotes
             values = [str(i).translate(str.maketrans("", "", "[]'")) for i in info.values()]
             values = [f'"{i}"' if re.search(r"[A-Z]", i) else i for i in values]
