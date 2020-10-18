@@ -44,6 +44,22 @@ def test_prefixes_in_order(courses):
         print(i, str(prefixes_out_of_order[i]))
 
 
+def test_expected_number_of_sections(courses):
+    """
+    Find courses where `total-sections` differs from the number of course-numbers divided by the number
+    of prefixes:
+
+        total-sections  !=  |course-numbers| / |prefixes|
+
+    Since each section should appear on the class schedule once under each prefix, the total number of sections
+    should equal the number of appearances on the class schedule / number of prefixes.
+    """
+    prefixes_out_of_order = {k: v for k, v in courses.items()
+                             if v["total-sections"] != len(set(v["course-numbers"])) / len(v["prefixes"])}
+    for i in prefixes_out_of_order:
+        print(i, str(prefixes_out_of_order[i]))
+
+
 if __name__ == '__main__':
     semester_url = "https://www.macalester.edu/registrar/schedules/2020fall/class-schedule/"
     semester_requests = requests.get(semester_url).text
@@ -53,3 +69,5 @@ if __name__ == '__main__':
     test_more_than_one_prefix(cross_listed_courses)
     print("\n\n")
     test_prefixes_in_order(cross_listed_courses)
+    print("\n\n")
+    test_expected_number_of_sections(cross_listed_courses)
