@@ -103,11 +103,6 @@ if __name__ == '__main__':
     cross_listed_courses = get_cross_listed(bs4_content)
     # create_dataset(cross_listed_courses, "cross-listed.csv")
     #
-    # # find courses where there is only one cross-listed course; this needs to be fixed
-    # one_crosslist = {k: cross_listed_courses[k] for k in cross_listed_courses if len(cross_listed_courses[k]) == 1}
-    # for i in one_crosslist:
-    #     print(i, one_crosslist[i])
-    #
     #
     # pp(cross_listed_courses)
 
