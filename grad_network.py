@@ -7,7 +7,7 @@ def create_nodes(in_file, out_file):
     pass
 
 
-def clean_commencement_text(in_file, out_file):
+def clean_commencement_text(in_file, out_file, separate_AMS=True, merge_majors=True, repl_apostrophe=True):
     new_text: str
     with open(in_file, 'r', encoding="utf-8") as f:
         text = f.read()
@@ -18,8 +18,15 @@ def clean_commencement_text(in_file, out_file):
                                     """, r"\1 \2 \3\n", text)                           # put the lines all on one line
         # the same regex without whitespace is:
         # "(.*(?:Major|Minor).*)\n(.*(?:Major|Minor|\band\b|Concentration).*)\n(.*(?:Major|Minor|Concentration))?(\n)?"
-
     print(f"{num_subs} substitutions made")
+
+    if separate_AMS:
+        new_text = re.sub(r"Mathematics \(Applied Mathematics and Statistics\)", "Applied Mathematics and Statistics", new_text)
+    if merge_majors:
+        new_text = re.sub(r" \(.*?\)", "", new_text)
+    if repl_apostrophe:
+        new_text = re.sub(r"’", "'", new_text)
+
     # get every third line from the text, these correspond to the lines with degree info
     degree_info = new_text.splitlines(keepends=True)[2::3]
 
