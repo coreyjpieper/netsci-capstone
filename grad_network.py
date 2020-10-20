@@ -3,6 +3,39 @@ from pprint import pp
 from typing import List, Tuple, Dict, Union
 
 
+subject_to_prefix = {
+    "African Studies Concentration": "AFRI", "American Studies": "AMST",
+    "Anthropology": "ANTH", "Applied Mathematics and Statistics": "AMS",
+    "Art": "ART", "Asian Studies": "ASIA",
+    "Biology": "BIOL", "Chemistry": "CHEM",
+    "Chinese": "CHIN", "Classical Mediterranean and Middle East": "CLAS",
+    "Cognitive Science Concentration": "CGSC", "Community and Global Health Concentration": "CGHC",
+    "Computer Science": "COMP", "Critical Theory Concentration": "CRIT",
+    "Data Science": "DATA", "Economics": "ECON",
+    "Educational Studies": "EDUC", "English": "ENGL",
+    "Environmental Studies": "ENVI", "Food, Agriculture and Society Concentration": "FASC",
+    "French": "FREN", "Geography": "GEOG",
+    "Geology": "GEOL", "German Studies": "GERM",
+    "History": "HIST", "Human Rights and Humanitarianism Concentration": "HRHC",
+    "Individually Designed Interdepartmental": "IDDI", "International Development Concentration": "INDE",
+    "International Studies": "INTL", "Japanese": "JAPA",
+    "Latin American Studies": "LATI", "Legal Studies Concentration": "LGLS",
+    "Linguistics": "LING", "Mathematics": "MATH",
+    "Media Studies": "MDST", "Media and Cultural Studies": "MCST",
+    "Middle Eastern Studies and Islamic Civilization Concentration": "MEIC", "Music": "MUSI",
+    "Neuroscience": "NSCI", "Performance Design and Technologies": "PFDT",
+    "Philosophy": "PHIL", "Physics": "PHYS",
+    "Political Science": "POLI", "Portuguese": "PORT",
+    "Psychology": "PSYC", "Religious Studies": "RELI",
+    "Russian Studies": "RUSS", "Sociology": "SOCI",
+    "Spanish": "SPAN", "Statistics": "STAT",
+    "Theater": "THTR", "Theater and Dance": "THDA",
+    "Urban Studies Concentration": "URBN", "Women’s, Gender, and Sexuality Studies": "WGSS"
+}
+
+prefix_to_subject = {v: k for k, v in subject_to_prefix.items()}
+
+
 def create_nodes(in_file, out_file):
     pass
 
