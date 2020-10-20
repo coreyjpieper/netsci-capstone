@@ -30,14 +30,17 @@ subject_to_prefix = {
     "Russian Studies": "RUSS", "Sociology": "SOCI",
     "Spanish": "SPAN", "Statistics": "STAT",
     "Theater": "THTR", "Theater and Dance": "THDA",
-    "Urban Studies Concentration": "URBN", "Women’s, Gender, and Sexuality Studies": "WGSS"
+    "Urban Studies Concentration": "URBN", "Women's, Gender, and Sexuality Studies": "WGSS"
 }
 
 prefix_to_subject = {v: k for k, v in subject_to_prefix.items()}
 
 
-def create_nodes(in_file, out_file):
-    pass
+def create_nodes(file):
+    with open(file, 'w') as f:
+        f.write("Id, Label\n")
+        for prefix, subject in prefix_to_subject.items():
+            f.write(f'{prefix}, "{subject}" \n')    # ex: ANTH, "Anthropology"
 
 
 def clean_commencement_text(in_file, out_file, separate_AMS=True, merge_majors=True, repl_apostrophe=True):
@@ -92,5 +95,10 @@ def count_grad_degrees(file):
     return degree_counts
 
 
-clean_commencement_text("commencement_2020.txt", "mac_grads_2020.txt")
-pp(count_grad_degrees("mac_grads_2020.txt"))
+# clean_commencement_text("commencement_2020.txt", "mac_grads_2020_clean.txt")
+# degree_counts = count_grad_degrees("mac_grads_2020_clean.txt")
+# pp({k: degree_counts[k] for k in sorted(degree_counts.keys())})
+
+# pp(subject_to_prefix)
+# pp(prefix_to_subject)
+create_nodes("nodes_grad.csv")
