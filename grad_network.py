@@ -1,3 +1,4 @@
+import itertools
 import re
 from pprint import pp
 from typing import List, Tuple, Dict, Union
@@ -41,6 +42,21 @@ def create_nodes(file):
         f.write("Id, Label\n")
         for prefix, subject in prefix_to_subject.items():
             f.write(f'{prefix}, "{subject}" \n')    # ex: ANTH, "Anthropology"
+
+
+def create_edges(in_file, out_file):
+    with open(in_file, 'r') as inp:
+        with open(out_file, 'w') as out:
+            out.write("Source, Target, Type, Weight\n")
+            for line in inp:
+                degrees = re.findall(r"(?:, )?(.*?) (Major|Minor|Concentration)", line)
+                subject_pairs = itertools.combinations(degrees, 2)
+                # flatten tuples
+                subject_pairs = [i[0] + i[1] for i in subject_pairs]
+
+                for pair in subject_pairs:
+                    prefix_1, prefix_2 = subject_to_prefix[pair[0]], subject_to_prefix[pair[2]]
+                    out.write(f'{prefix_1}, {prefix_2}, Undirected, 1\n')
 
 
 def clean_commencement_text(in_file, out_file, separate_AMS=True, merge_majors=True, repl_apostrophe=True):
@@ -99,6 +115,5 @@ def count_grad_degrees(file):
 # degree_counts = count_grad_degrees("mac_grads_2020_clean.txt")
 # pp({k: degree_counts[k] for k in sorted(degree_counts.keys())})
 
-# pp(subject_to_prefix)
-# pp(prefix_to_subject)
 create_nodes("nodes_grad.csv")
+create_edges("mac_grads_2020_clean.txt", "edges_grad.csv")
