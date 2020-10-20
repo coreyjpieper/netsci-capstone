@@ -1,9 +1,9 @@
-from pprint import pp
 import re
+from pprint import pp
+from typing import List, Tuple, Dict, Union
 
 
 def create_nodes(in_file, out_file):
-    # result = content.find_all("h3", id=True)
     pass
 
 
@@ -27,4 +27,30 @@ def clean_commencement_text(in_file, out_file):
         f.write("".join(degree_info))
 
 
-clean_commencement_text("commencement_2020.txt", "commencement_2020_clean.txt")
+def count_grad_degrees(file):
+    degree_counts: Dict[str, Union[Dict, int]] = {}
+    degrees: List[Tuple[str, str]]
+    with open(file, 'r', encoding="utf-8") as f:
+        text = f.read()
+        # read the subject and the word Major/Minor/Concentration,  ex: (Computer Science) (Major)
+        degrees = re.findall(r"(?:, )?(.*?) (Major|Minor|Concentration)", text)
+
+    for degree, degree_type in degrees:
+        degree = degree + (" Concentration" if degree_type == "Concentration" else "")
+        degree_type = degree_type.lower()
+        if degree not in degree_counts:
+            if degree_type == "concentration":
+                degree_counts[degree] = 1
+            else:
+                degree_counts[degree] = {"major": 0, "minor": 0, degree_type: 1}
+        else:
+            if degree_type == "concentration":
+                degree_counts[degree] += 1
+            else:
+                degree_counts[degree][degree_type] += 1
+
+    return degree_counts
+
+
+clean_commencement_text("commencement_2020.txt", "mac_grads_2020.txt")
+pp(count_grad_degrees("mac_grads_2020.txt"))
