@@ -37,11 +37,19 @@ subject_to_prefix = {
 prefix_to_subject = {v: k for k, v in subject_to_prefix.items()}
 
 
-def create_nodes(file):
-    with open(file, 'w') as f:
-        f.write("Id, Label\n")
-        for prefix, subject in prefix_to_subject.items():
-            f.write(f'{prefix}, "{subject}" \n')    # ex: ANTH, "Anthropology"
+def create_nodes(in_file, out_file):
+    degree_counts = count_grad_degrees(in_file)
+    with open(out_file, 'w') as f:
+        f.write("Id, Label, Weight, Size\n")
+        for subject, counts in degree_counts.items():
+            prefix = subject_to_prefix[subject.replace(" Concentration", "")]
+            if type(counts) == int:     # concentration
+                weight = 0.5 * counts
+                size = counts
+            else:                       # majors and minors
+                weight = 1 * counts["major"] + 0.5 * counts["minor"]
+                size = counts["major"] + counts["minor"]
+            f.write(f'{prefix}, "{subject}", {weight}, {size}\n')    # ex: ANTH, "Anthropology", 17.5, 19
 
 
 def create_edges(in_file, out_file):
