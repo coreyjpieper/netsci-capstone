@@ -49,9 +49,11 @@ def create_edges(in_file, out_file):
         with open(out_file, 'w') as out:
             out.write("Source, Target, Type, Weight\n")
             for line in inp:
+                # read the subject and the word Major/Minor/Concentration,  ex: (Computer Science) (Major)
                 degrees = re.findall(r"(?:, )?(.*?) (Major|Minor|Concentration)", line)
                 subject_pairs = itertools.combinations(degrees, 2)
-                # flatten tuples
+                # flatten tuples in the list
+                # (('Chemistry', 'Major'), ('Biology', 'Minor')),  -->  ('Chemistry', 'Major', 'Biology', 'Minor'),
                 subject_pairs = [i[0] + i[1] for i in subject_pairs]
 
                 for pair in subject_pairs:
