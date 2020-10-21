@@ -55,8 +55,16 @@ def create_edges(in_file, out_file):
                 subject_pairs = [i[0] + i[1] for i in subject_pairs]
 
                 for pair in subject_pairs:
+                    edge_weight = compute_edge_weight(pair[1], pair[3])
                     prefix_1, prefix_2 = subject_to_prefix[pair[0]], subject_to_prefix[pair[2]]
-                    out.write(f'{prefix_1}, {prefix_2}, Undirected, 1\n')
+                    out.write(f'{prefix_1}, {prefix_2}, Undirected, {edge_weight}\n')
+
+
+def compute_edge_weight(degree_type_1, degree_type_2):
+    if degree_type_1 == "Major" and degree_type_2 == "Major":
+        return 1
+    else:
+        return 0.5
 
 
 def clean_commencement_text(in_file, out_file, separate_AMS=True, merge_majors=True, repl_apostrophe=True):
