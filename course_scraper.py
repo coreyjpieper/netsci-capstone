@@ -39,6 +39,9 @@ def get_cross_listed(content):
     for description in result:
         course_title = description.find_previous(class_="class-schedule-course-title").text     # ex: Network Science
         course_number = description.find_previous(class_="class-schedule-course-number").text   # ex: COMP 479-01
+        if course_number[-2] == 'L':  # course is a lab, do not add it
+            print(f"Removed a lab: {course_title}")
+            continue
         avail_max = description.find_previous(class_="class-schedule-label").text               # ex: Closed 1 / 16
         available_seats, max_capacity = map(int, re.search(r"(-?\d+) / (\d+)", avail_max).groups())  # 1, 16
         enrollment = max_capacity - available_seats
@@ -53,7 +56,6 @@ def get_cross_listed(content):
                 "total-sections": 1,
                 "total-enrollment": enrollment
             }
-
         elif course_number not in courses[course_title]["course-numbers"]:  # found a new section
             cross_listed_with = re.findall(r"\w{3,4}[ -]\d{3}-\d{2}", description)
             courses[course_title]["course-numbers"].extend([course_number] + cross_listed_with)
