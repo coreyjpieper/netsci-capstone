@@ -83,15 +83,21 @@ def create_nodes(content, file):
             f.write(f'{subject.get("id")}, "{subject.text.strip()}" \n')    # ex: ANTH, "Anthropology"
 
 
-def create_edges(courses, file):
+def create_edges(courses, file, weight_by):
     with open(file, 'w') as f:
-        f.write("Source, Target\n")
+        f.write("Source, Target, Type, Weight\n")
         for course, info in courses.items():
             subject_pairs = itertools.combinations(info["prefixes"], 2)
+            assert weight_by in ["courses", "sections", "enrollment"]
+            if weight_by == "courses":
+                edge_weight = 1
+            elif weight_by == "sections":
+                edge_weight = info["total-sections"]
+            elif weight_by == "enrollment":
+                edge_weight = info["total-enrollment"]
 
             for pair in subject_pairs:
-                f.write(', '.join(pair))
-                f.write('\n')
+                f.write(f'{pair[0]}, {pair[1]}, Undirected, {edge_weight}\n')
 
 
 if __name__ == '__main__':
