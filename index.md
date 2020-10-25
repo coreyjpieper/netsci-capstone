@@ -16,7 +16,7 @@ In this section I will discuss the details of what vertices and edges signify in
     - edges: a cross-listed course
     - edge weights: (three varieties) the number of cross-listed courses, the number of cross-listed sections, and enrollment in cross-listed courses
 
-    I choose the timeframe of fall 2018 to spring 2020 for several reasons. For one, since I was comparing this network to the graduating class of 2020 it made sense for the final semester to be spring 2020. I did a two year (or four semester) period because classes are often rotated within departments and offered every other semester or every other year. This all gives us a larger sample size of classes. Finally, since I wanted to incorporate enrollment information into my network, if I used the 2020-2021 school year I would either have to use fall 2020 and leave out spring 2021, which would be somewhat awkward, or I would have to use both semesters and deal with having no enrollment information for spring 2021.
+    I choose the timeframe of fall 2018 to spring 2020 for several reasons. For one, since I was comparing this network to the graduating class of 2020 it made sense for the final semester to be spring 2020. I did a two year (or four semester) period because classes are often rotated within departments and offered every other semester or every other year. This also gives us a larger sample size of classes.
 
 2. **Network of double majors/minors/concentrations from the class of 2020**
     - vertices: areas of study listed for degrees
@@ -44,6 +44,19 @@ The network of double majors/minors/concentrations was created using text from a
 
 #### Cross-listed network
 
+We'll start our analysis by looking at the networks of cross-listed courses. The three variations differ only in their edge weight so the graph structure among all of them is the same. Let's begin with the simplest case where edge weights represent the number of cross-listed courses.
+
 ![a network of cross-listed courses](assets/cross-listed.png)
 
-<li style="color: #4cae4c">hello world</li>
+The resulting network has one giant connected component with 37 vertices and three disonnected vertices: Physical Education, Interdisciplinary Studies, Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester which is the Neuroscience Capstone.
+
+In this network the edges with the highest weight are between American Studies & History and Spanish & Latin American Studies, both with an edge weight of 13. This means that there were a total of 13 courses cross-listed between these two categories over a four semester period. The vertices with the highest weighted degree are American Studies (66); Environmental Studies (61); and Women's, Gender, and Sexuality Studies (57); with the weighted degree corresponding to the number of times courses in those subjects were cross-listed with other subjects. If we run a community detection algorithm on the graph, we get back back five communities of roughly equal size (12.5% - 27.5%). The two smallest ones both contain fives nodes and correspond to the green and cyan communities depicted above. Here is my take on the communities:
+  
+<li style="color: limegreen">green: the MSCS department plus closely related subjects (Physics and Philosophy)</li>
+<li style="color: cyan">cyan: Linguistics, Music, and subject related to Asia </li>
+<li style="color: darkorange">orange: combination of natural sciences and social sciences (Geography, Economics, Psychology)
+</li>
+<li style="color: dodgerblue">blue: humanities with sociology (if we count foreign languages as humanities and Theatre and Dance as an art under humanities)</li>
+<li style="color: deeppink">magenta: a mixture of humanities (English, Religious Studies, Art) and social sciences (International Studies, Political Science)
+</li>
+
