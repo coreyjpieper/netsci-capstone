@@ -52,7 +52,7 @@ The network of double majors/minors/concentrations was created using text from a
 
 #### Cross-listed network
 
-We'll start our analysis by looking at the networks of cross-listed courses. Keep in mind that the three variations differ only in their edge weight so the graph structure among all of them is the same. Let's begin with the simplest case where edge weights represent the number of cross-listed courses.
+We'll start our analysis by looking at the networks of cross-listed courses. Keep in mind that the three variations differ only in their edge weight, so the graph structure among all of them is the same. Let's begin with the simplest case where edge weights represent the number of cross-listed courses.
 
 ![a network of cross-listed courses](assets/cross-listed.png)
 
@@ -70,7 +70,7 @@ The resulting network has one giant connected component with 37 vertices and thr
 
 **Eigenvector Centrality** - If we were interested in finding the "most interdisciplinary" subject, the weighted degrees for each area of study tell us how often that subject was cross-listed. However, if we really want a thorough understanding of what subject is the most interdisciplinary, we must also take into account how interdisciplinary the neighbor disciplines are. The best-suited measure for finding this is the eigenvector centralities of the vertices. The three highest eigenvector centralities belong to Women's, Gender, and Sexuality Studies (1.0); International Studies (0.965); and American Studies(0.954). Let's examine the eigenvectors centralities alongside weighted degrees:
 
-![a network of cross-listed courses](assets/cross-listed%20eigen%20vs%20degree.png)
+![a network of cross-listed courses](assets/cross-listed_eigen_vs_degree.png)
 
 Two subjects, Linguistics and Sociology, launched to the top of the eigenvector centralities despite their low degree, so we get the sense that the disciplines they are connected with are very well-connected. On the otherhand, History really dropped down in eigenvector centrality.
 
