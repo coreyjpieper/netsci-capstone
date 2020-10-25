@@ -48,12 +48,12 @@ We'll start our analysis by looking at the networks of cross-listed courses. The
 
 ![a network of cross-listed courses](assets/cross-listed.png)
 
-The resulting network has one giant connected component with 37 vertices and three disonnected vertices: Physical Education, Interdisciplinary Studies, Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester which is the Neuroscience Capstone.
+The resulting network has one giant connected component with 37 vertices and three disonnected vertices: Physical Education, Interdisciplinary Studies, and Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester which is the Neuroscience Capstone.
 
 In this network the edges with the highest weight are between American Studies & History and Spanish & Latin American Studies, both with an edge weight of 13. This means that there were a total of 13 courses cross-listed between these two categories over a four semester period. The vertices with the highest weighted degree are American Studies (66); Environmental Studies (61); and Women's, Gender, and Sexuality Studies (57); with the weighted degree corresponding to the number of times courses in those subjects were cross-listed with other subjects. If we run a community detection algorithm on the graph, we get back back five communities of roughly equal size (12.5% - 27.5%). The two smallest ones both contain fives nodes and correspond to the green and cyan communities depicted above. Here is my take on the communities:
   
 <li style="color: limegreen">green: the MSCS department plus closely related subjects (Physics and Philosophy)</li>
-<li style="color: cyan">cyan: Linguistics, Music, and subject related to Asia </li>
+<li style="color: deepskyblue">cyan: Linguistics, Music, and subject related to Asia </li>
 <li style="color: darkorange">orange: combination of natural sciences and social sciences (Geography, Economics, Psychology)
 </li>
 <li style="color: dodgerblue">blue: humanities with sociology (if we count foreign languages as humanities and Theatre and Dance as an art under humanities)</li>
