@@ -54,7 +54,9 @@ The network of double majors/minors/concentrations was created using text from a
 
 We'll start our analysis by looking at the networks of cross-listed courses. Keep in mind that the three variations differ only in their edge weight, so the graph structure among all of them is the same. Let's begin with the simplest case where edge weights represent the number of cross-listed courses.
 
-![a network of cross-listed courses](assets/cross-listed.png)
+![network of cross-listed courses](assets/cross-listed.png)
+
+_vertices are colored by community and sized by PageRank, labels are sized by betweeness centrality_  
 
 The resulting network has one giant connected component with 37 vertices and three disconnected vertices: Physical Education, Interdisciplinary Studies, and Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester are for the Neuroscience Capstone.
 
@@ -70,11 +72,11 @@ The resulting network has one giant connected component with 37 vertices and thr
 
 **Eigenvector Centrality** - If we were interested in finding the "most interdisciplinary" subject, the weighted degrees for each area of study tell us how often that subject was cross-listed. However, if we really want a thorough understanding of what subject is the most interdisciplinary, we must also take into account how interdisciplinary the neighbor disciplines are. The best-suited measure for finding this is the eigenvector centralities of the vertices. The three highest eigenvector centralities belong to Women's, Gender, and Sexuality Studies (1.0); International Studies (0.965); and American Studies(0.954). Let's examine the eigenvectors centralities alongside weighted degrees:
 
-![a network of cross-listed courses](assets/cross-listed_eigen_vs_degree.png)
+![eigenvector vs degree centrality](assets/cross-listed_eigen_vs_degree.png)
 
 Two subjects, Linguistics and Sociology, launched to the top of the eigenvector centralities despite their low degree, so we get the sense that the disciplines they are connected with are very well-connected. On the otherhand, History really dropped down in eigenvector centrality.
 
 **PageRank** -
 Another centrality measure we can investigate are the PageRank centralities of nodes. The vertices with the highest PageRank centralities are Environmental Studies (0.068); American Studies (0.065); and Women's, Gender, and Sexuality Studies (0.061) The PageRank centrality measures can be interpreted as follows. Suppose we start with a random department on the class schedule page. With a probability of 0.85 we pick one of the mentioned cross-listed sections within that department and follow it to a new department, and with a probability of 0.15 we pick a department at random. Then the PageRank centralities are the long-run probabilites that we end up on a given subject. If we return back to the picture of the network, it's clear why Environmental Studies jumped to the top. The disciplines Environmental Studies is connected with have low degreees, such as Psychology, Geology, Biology, and Physics. Therefore, from these vertices we have few choices as to where we go next, so with high probability we end up at Environmental Studies. We can see that the PageRank for WGSS suffered for the opposite reason: because WGSS has a high eigenvector centrality and is connected to many high-degree vertices, few links led back to it.
 
-![a network of cross-listed courses](assets/cross-listed%20pagerank%20vs%20degree.png)
+![pagerank vs degree centrality](assets/cross-listed%20pagerank%20vs%20degree.png)
