@@ -44,4 +44,6 @@ The network of double majors/minors/concentrations was created using text from a
 
 #### Cross-listed network
 
+![a network of cross-listed courses](cross-listed.png)
 
+<li style="color: #4cae4c">hello world</li>
