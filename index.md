@@ -56,7 +56,9 @@ We'll start our analysis by looking at the networks of cross-listed courses. Kee
 
 ![network of cross-listed courses](assets/cross-listed.png)
 
-_vertices are colored by community and sized by PageRank, labels are sized by betweeness centrality_  
+_vertices are colored by community and sized by PageRank, labels are sized by betweeness centrality_
+
+<br>
 
 The resulting network has one giant connected component with 37 vertices and three disconnected vertices: Physical Education, Interdisciplinary Studies, and Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester are for the Neuroscience Capstone.
 
@@ -80,3 +82,15 @@ Two subjects, Linguistics and Sociology, launched to the top of the eigenvector 
 Another centrality measure we can investigate are the PageRank centralities of nodes. The vertices with the highest PageRank centralities are Environmental Studies (0.068); American Studies (0.065); and Women's, Gender, and Sexuality Studies (0.061) The PageRank centrality measures can be interpreted as follows. Suppose we start with a random department on the class schedule page. With a probability of 0.85 we pick one of the mentioned cross-listed sections within that department and follow it to a new department, and with a probability of 0.15 we pick a department at random. Then the PageRank centralities are the long-run probabilites that we end up on a given subject. If we return back to the picture of the network, it's clear why Environmental Studies jumped to the top. The disciplines Environmental Studies is connected with have low degreees, such as Psychology, Geology, Biology, and Physics. Therefore, from these vertices we have few choices as to where we go next, so with high probability we end up at Environmental Studies. We can see that the PageRank for WGSS suffered for the opposite reason: because WGSS has a high eigenvector centrality and is connected to many high-degree vertices, few links led back to it.
 
 ![pagerank vs degree centrality](assets/cross-listed%20pagerank%20vs%20degree.png)
+
+#### Variations of the cross-listed network
+
+In the two other variations of the cross-listed network the edge weights are weighted by the number of cross-listed sections and enrollment. The network that looks at sections is very similar to the network that looks at courses: the eight highest weighted degree vertices remain the same, and the average weighted degree increased from 21.1 to only 22. For this reason, we will skip over the network with edges weighted by sections and focus our attention on the network weighted by enrollment.
+
+![pagerank vs degree centrality](assets/cross-listed%20by%20enrollment.png)
+
+_vertices are colored by community and sized by PageRank, labels are sized by betweeness centrality_
+
+<br>
+
+**Degrees and Communities** - The average weighted degree in the network of enrollment is 358.8. The three highest weighted degree are still Environmental Studies (1191); American Studies (1071); and Women's, Gender, and Sexuality Studies (977); with American Studies and Environmental Studies swapping places. This was a little surprising to me as I expected to see some change in the top weighted degrees, however the relative positioning of the seven highest weighted degrees remained the same. It seems like they just had so many more cross-listed courses that they continued to remain in the lead. Nonetheless, some of the STEM subjects like Biology (584) and Computer Science (430) rose in rank, likely due to their large class sizes. Looking at the new community assignments, we see that the community with the MSCS department lost Physics and Philosophy to separate communities and became a lone trio. It's easy to see why the MSCS community shrunk: the edges between Mathematics, Computer Science, and Statistics are a lot stronger than those which Physics and Philosophy has with them. The community which I identified before as "Linguistics, Music, and subjects related to Asia" grew the most with three new members: Religious Studies, Art and Art History, and Classical Mediterranean.
