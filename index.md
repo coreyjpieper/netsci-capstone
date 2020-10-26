@@ -37,7 +37,7 @@ In this section I will discuss the details of what vertices and edges signify in
 
 ---
 
-#### Cross-listed network
+#### Cross-listed courses network
 
 To gather data on cross-listed courses at Macalester I scraped course information from the registrar's [class schedule](https://www.macalester.edu/registrar/schedules/2020fall/class-schedule/). In order to do this, I used the [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) web scraping library in Python and made extensive use of regular expressions, which is a syntax for specifying text patterns. The scraper works by searching for the string "cross-listed" within the whole class schedule, and for each match we get the course title, course number, enrollment, and what courses it's cross-listed with. To keep track of what courses we'd already seen, the data was organized in a Python dictionary where the keys were the course's name and the values were information about the course. This worked fairly well except in cases were the course names were slightly off between cross-listed courses. I resolved this by creating another dictionary of cross-listed numbers seen so far, and if a course number was previously mentioned that course got skipped. To generate the edges in the network, I got the list of prefixes for each course and for each combination of two prefixes I wrote an edge between those two subjects.
 
@@ -50,7 +50,7 @@ The network of double majors/minors/concentrations was created using text from a
 
 ---
 
-#### Cross-listed network
+#### Cross-listed courses network
 
 We'll start our analysis by looking at the networks of cross-listed courses. Keep in mind that the three variations differ only in their edge weight, so the graph structure among all of them is the same. Let's begin with the simplest case where edge weights represent the number of cross-listed courses.
 
@@ -60,9 +60,9 @@ _vertices are colored by community and sized by PageRank, labels are sized by be
 
 <br>
 
-The resulting network has one giant connected component with 37 vertices and three disconnected vertices: Physical Education, Interdisciplinary Studies, and Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers about 1-2 course sections each semester are for the Neuroscience Capstone.
+There are 40 vertices and 144 edges in the resulting network. It has one giant connected component with 37 vertices and three disconnected vertices: Physical Education, Interdisciplinary Studies, and Neuroscience. It might seem strange that "Interdisciplinary Studies" was not cross-listed with any discipline, but this is because there are usually 2-3 courses taught each semester and they tend to be either seminars for fellowships or 1-2 credit courses. Similarly, Neuroscience only offers one course each semester which is the Neuroscience Capstone.
 
-**Degrees and Communities** - In this network the edges with the highest weight are between American Studies & History and Spanish & Latin American Studies, both with an edge weight of 13. This means that there were a total of 13 courses cross-listed between these two categories over a four semester period. The vertices with the highest weighted degree are American Studies (66); Environmental Studies (61); and Women's, Gender, and Sexuality Studies (57); with the weighted degree corresponding to the number of times courses in those subjects were cross-listed with other subjects. If we run a community detection algorithm on the graph, we get back back five communities of roughly equal size (12.5% - 27.5%). The two smallest ones both contain fives nodes and correspond to the green and cyan communities depicted above. Here is my take on the communities:
+**Edges, Degrees, and Communities** - In this network the edges with the highest weight are between American Studies & History and Spanish & Latin American Studies, both with an edge weight of 13. This means that there were a total of 13 courses cross-listed between these two categories over a four semester period. The vertices with the highest weighted degree are American Studies (66); Environmental Studies (61); and Women's, Gender, and Sexuality Studies (57); with the weighted degree corresponding to the number of times courses in those subjects were cross-listed with other subjects. If we run a community detection algorithm on the graph, we get back back five communities of roughly equal size (12.5% - 27.5%). The two smallest ones both contain fives nodes and correspond to the green and cyan communities depicted above. Here is my take on the communities:
   
 <li style="color: limegreen">green: the MSCS department plus closely related subjects (Physics and Philosophy)</li>
 <li style="color: deepskyblue">light blue: Linguistics, Music, and subject related to Asia </li>
@@ -79,7 +79,7 @@ The resulting network has one giant connected component with 37 vertices and thr
 Two subjects, Linguistics and Sociology, launched to the top of the eigenvector centralities despite their low degree, so we get the sense that the disciplines they are connected with are very well-connected. On the otherhand, History really dropped down in eigenvector centrality.
 
 **PageRank** -
-Another centrality measure we can investigate are the PageRank centralities of nodes. The vertices with the highest PageRank centralities are Environmental Studies (0.068); American Studies (0.065); and Women's, Gender, and Sexuality Studies (0.061) The PageRank centrality measures can be interpreted as follows. Suppose we start with a random department on the class schedule page. With a probability of 0.85 we pick one of the mentioned cross-listed sections within that department and follow it to a new department, and with a probability of 0.15 we pick a department at random. Then the PageRank centralities are the long-run probabilites that we end up on a given subject. If we return back to the picture of the network, it's clear why Environmental Studies jumped to the top. The disciplines Environmental Studies is connected with have low degreees, such as Psychology, Geology, Biology, and Physics. Therefore, from these vertices we have few choices as to where we go next, so with high probability we end up at Environmental Studies. We can see that the PageRank for WGSS suffered for the opposite reason: because WGSS has a high eigenvector centrality and is connected to many high-degree vertices, few links led back to it.
+Another centrality measure we can investigate are the PageRank centralities of nodes. The vertices with the highest PageRank centralities are Environmental Studies (0.068); American Studies (0.065); and Women's, Gender, and Sexuality Studies (0.061) The PageRank centrality measures can be interpreted as follows. Suppose we start with a random department on the class schedule page. With a probability of 0.85 we pick one of the mentioned cross-listed sections within that department and follow it to a new department, and with a probability of 0.15 we pick a department at random. Then the PageRank centralities are the long-run probabilites that we end up on a given subject. If we return back to the picture of the network, we can see why Environmental Studies jumped to the top. The disciplines Environmental Studies is connected with have low degreees, such as Psychology, Geology, Biology, and Physics. Therefore, from these vertices we have few choices as to where we go next, so with high probability we end up at Environmental Studies. We can see that the PageRank for WGSS suffered for the opposite reason: because WGSS has a high eigenvector centrality and is connected to many high-degree vertices, few links lead back to it.
 
 ![pagerank vs degree centrality](assets/cross-listed%20pagerank%20vs%20degree.png)
 
@@ -94,3 +94,19 @@ _vertices are colored by community and sized by PageRank, labels are sized by be
 <br>
 
 **Degrees and Communities** - The average weighted degree in the network of enrollment is 358.8. The three highest weighted degree are still Environmental Studies (1191); American Studies (1071); and Women's, Gender, and Sexuality Studies (977); with American Studies and Environmental Studies swapping places. This was a little surprising to me as I expected to see some change in the top weighted degrees, however the relative positioning of the seven highest weighted degrees remained the same. It seems like they just had so many more cross-listed courses that they continued to remain in the lead. Nonetheless, some of the STEM subjects like Biology (584) and Computer Science (430) rose in rank, likely due to their large class sizes. Looking at the new community assignments, we see that the community with the MSCS department lost Physics and Philosophy to separate communities and became a lone trio. It's easy to see why the MSCS community shrunk: the edges between Mathematics, Computer Science, and Statistics are a lot stronger than those which Physics and Philosophy has with them. The community which I identified before as "Linguistics, Music, and subjects related to Asia" grew the most with three new members: Religious Studies, Art and Art History, and Classical Mediterranean.
+
+
+
+#### Graduates network
+
+We now turn to the network of degree combinations from Macalester graduates.
+
+![network of graduates](assets/graduates.png)
+
+_vertices are colored by community and sized by eigenvector centrality, labels are sized by betweeness centrality_
+
+<br>
+
+The network has 54 nodes and 356 edges. It is obviously a lot more dense than the network of cross-listed courses, which is because it contains every possible degree combination which a student in the class of 2020 did. The graph density is 0.249, while the density of the previous network was 0.185. Also worth noting is that the graph is one giant connected component, which is in part because it is so dense and because we deliberately searched for degree combinations, so it was never possible for a subject to be by itself. As one might expect with a denser network, this network had a lower network diameter (3) and a lower modularity score (0.304) because of all the added edges.
+
+**Edges and Degrees**  - By examining the edges with the greatest weight, we can figure out which was the most popular degree combination according to our weighting formula. The edges with the greatest weight are between Applied Mathematics and Economics (15.5), Computer Science and Applied Mathematics (13.5), and Neuroscience and Biology (12). This is really big because there were no cross-listed courses between Mathematics and Economics or Neuroscience and Biology in the class schedule, so already this network is giving us insight into relationships that we wouldn't be able to observe from just looking at cross-listed courses. The vertices with the highest weighted degrees are Biology, Political Science, Computer Science, and Psychology, with weighted degrees ranging from 54 to 44.5. Therefore, graduates most frequently combine these disciplines with other disciplines.
